@@ -79,6 +79,22 @@ namespace AnywayStore.Models
         [Display(Name = "Confirm password")]
         [Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
+
+        [Required]
+        [StringLength(100, ErrorMessage = "The {0} cannot be empty.")]
+        [Display(Name = "Full Name")]
+        public string Name { get; set; }
+
+        [Required]
+        [DataType(DataType.PhoneNumber)]
+        [Display(Name = "Phone Number")]
+        public string PhoneNumber { get; set; }
+
+        public string SelectedRole { get; set; }
+
+        [Display(Name = "Roles")]
+        public List<string> Roles { get; set; }
+
     }
 
     public class ResetPasswordViewModel
