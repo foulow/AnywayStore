@@ -9,7 +9,12 @@ namespace AnywayStore
         public static void RegisterBundles(BundleCollection bundles)
         {
             bundles.Add(new ScriptBundle("~/bundles/jquery").Include(
-                        "~/Scripts/jquery-{version}.js"));
+                        "~/Scripts/jquery-3.2.1.min.js",
+                        "~/Scripts/jquery-ui.min.js",
+                        "~/Scripts/jquery.nicescroll.min.js",
+                        "~/Scripts/jquery.slicknav.min.js",
+                        "~/Scripts/jquery.zoom.min.js"
+                        ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(
                         "~/Scripts/jquery.validate*"));
@@ -20,11 +25,24 @@ namespace AnywayStore
                         "~/Scripts/modernizr-*"));
 
             bundles.Add(new ScriptBundle("~/bundles/bootstrap").Include(
-                      "~/Scripts/bootstrap.js"));
+                      "~/Scripts/bootstrap.min.js"
+                      ));
+
+            bundles.Add(new ScriptBundle("~/bundles/carousel").Include(
+                    "~/Scripts/owl.carousel.min.js",
+                    "~/Scripts/main.js"
+                    ));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
-                      "~/Content/site.css"));
+                      "~/Content/css/bootstrap.min.css",
+                      "~/Content/css/font-awesome.min.css",
+                      "~/Content/css/flaticon.css",
+                      "~/Content/css/slicknav.min.css",
+                      "~/Content/css/jquery-ui.min.css",
+                      "~/Content/css/owl.carousel.min.css",
+                      "~/Content/css/animate.css",
+                      "~/Content/css/style.css"
+                      ));
         }
     }
 }
