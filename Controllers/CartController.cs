@@ -12,5 +12,10 @@ namespace AnywayStore.Controllers
         {
             return View();
         }
+
+        public ActionResult Checkout()
+        {
+            return View();
+        }
     }
 }

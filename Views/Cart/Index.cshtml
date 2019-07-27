@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Home Page";
+    ViewBag.Title = "Cart Page";
 }
 
 @Scripts.Render("~/bundles/jquery")
@@ -9,8 +9,8 @@
     <div class="container">
         <h4>Your cart</h4>
         <div class="site-pagination">
-            <a href="">Home</a> /
-            <a href="">Your cart</a>
+            <a href="@Url.Action("Index", "Home")">Home</a> /
+            <a href="@Url.Action("Index", "Cart")">Your cart</a>
         </div>
     </div>
 </div>
@@ -33,6 +33,27 @@
                                 </tr>
                             </thead>
                             <tbody>
+                                @*@foreach (var producto in ViewBag.Productos)
+                                {
+                                    <tr>
+                                        <td class="product-col">
+                                            <img src="img/cart/1.jpg" alt=""> <!--imagen-->
+                                            <div class="pc-title">
+                                                <h4>Animal Print Dress</h4> <!--Descripcion-->
+                                                <p>$45.90</p> <!--precio-->
+                                            </div>
+                                        </td>
+                                        <td class="quy-col">
+                                            <div class="quantity"> <!--cantidad-->
+                                                <div class="pro-qty">
+                                                    <input type="text" value="1">
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td class="size-col"><h4>Size M</h4></td> <!--size-->
+                                        <td class="total-col"><h4>$45.90</h4></td> <!--total (precio * cantidad)-->
+                                    </tr>
+                                }*@
                                 <tr>
                                     <td class="product-col">
                                         <img src="img/cart/1.jpg" alt="">
@@ -88,7 +109,7 @@
                                     <td class="total-col"><h4>$45.90</h4></td>
                                 </tr>
                             </tbody>
-                        </table>
+                            </table>
                     </div>
                     <div class="total-cost">
                         <h6>Total <span>$99.90</span></h6>
@@ -100,8 +121,8 @@
                     <input type="text" placeholder="Enter promo code">
                     <button>Submit</button>
                 </form>
-                <a href="" class="site-btn">Proceed to checkout</a>
-                <a href="" class="site-btn sb-dark">Continue shopping</a>
+                <a href="@Url.Action("Checkout", "Cart")" class="site-btn">Proceed to checkout</a>
+                <a href="@Url.Action("Index", "Products")" class="site-btn sb-dark">Continue shopping</a>
             </div>
         </div>
     </div>

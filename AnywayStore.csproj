@@ -192,6 +192,7 @@
     <Compile Include="Models\DBSet.cs" />
     <Compile Include="Models\IdentityModels.cs" />
     <Compile Include="Models\ManageViewModels.cs" />
+    <Compile Include="Models\Departments.cs" />
     <Compile Include="Models\Products.cs" />
     <Compile Include="Models\Roles.cs" />
     <Compile Include="Models\Sales.cs" />
@@ -200,8 +201,6 @@
     <Compile Include="Startup.cs" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Content\category.html" />
-    <Content Include="Content\checkout.html" />
     <Content Include="Content\css\animate.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\flaticon.css" />
@@ -262,7 +261,6 @@
     <Content Include="Scripts\main.js" />
     <Content Include="Scripts\map.js" />
     <Content Include="Scripts\owl.carousel.min.js" />
-    <Content Include="Content\product.html" />
     <Content Include="favicon.ico" />
     <Content Include="fonts\fontawesome-webfont.svg" />
     <Content Include="Global.asax" />
@@ -322,7 +320,7 @@
     <Content Include="Views\Shared\_LoginPartial.cshtml" />
     <Content Include="Views\Products\Create.cshtml" />
     <Content Include="Views\Products\Delete.cshtml" />
-    <Content Include="Views\Products\Details.cshtml" />
+    <Content Include="Views\Products\Product.cshtml" />
     <Content Include="Views\Products\Edit.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Sales\Create.cshtml" />
@@ -344,6 +342,7 @@
     <Content Include="Content\icon-fonts\fontawesome-webfont.woff2" />
     <None Include="packages.config" />
     <Content Include="Views\Cart\Index.cshtml" />
+    <Content Include="Views\Cart\Checkout.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Service Include="{4A0DDDB5-7A95-4FBF-97CC-616D07737A77}" />
