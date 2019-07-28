@@ -12,35 +12,21 @@ namespace AnywayStore.Controllers
 {
     public class SalesController : Controller
     {
-        private DBSet db = new DBSet();
-
         // GET: Sales
         public ActionResult Index()
         {
-            var sales = db.Sales.Include(s => s.Products).Include(s => s.Users);
-            return View(sales.ToList());
+            return View();
         }
 
         // GET: Sales/Details/5
         public ActionResult Details(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Sales sales = db.Sales.Find(id);
-            if (sales == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sales);
+            return View();
         }
 
         // GET: Sales/Create
         public ActionResult Create()
         {
-            ViewBag.product_id = new SelectList(db.Products, "id", "name");
-            ViewBag.user_id = new SelectList(db.Users, "id", "name");
             return View();
         }
 
@@ -49,35 +35,15 @@ namespace AnywayStore.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,cuantity,product_id,user_id")] Sales sales)
+        public ActionResult Create(int id)
         {
-            if (ModelState.IsValid)
-            {
-                db.Sales.Add(sales);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-
-            ViewBag.product_id = new SelectList(db.Products, "id", "name", sales.product_id);
-            ViewBag.user_id = new SelectList(db.Users, "id", "name", sales.user_id);
-            return View(sales);
+            return View();
         }
 
         // GET: Sales/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Sales sales = db.Sales.Find(id);
-            if (sales == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.product_id = new SelectList(db.Products, "id", "name", sales.product_id);
-            ViewBag.user_id = new SelectList(db.Users, "id", "name", sales.user_id);
-            return View(sales);
+            return View();
         }
 
         // POST: Sales/Edit/5
@@ -85,32 +51,15 @@ namespace AnywayStore.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,cuantity,product_id,user_id")] Sales sales)
+        public ActionResult Edit()
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(sales).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.product_id = new SelectList(db.Products, "id", "name", sales.product_id);
-            ViewBag.user_id = new SelectList(db.Users, "id", "name", sales.user_id);
-            return View(sales);
+            return View();
         }
 
         // GET: Sales/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Sales sales = db.Sales.Find(id);
-            if (sales == null)
-            {
-                return HttpNotFound();
-            }
-            return View(sales);
+            return View();
         }
 
         // POST: Sales/Delete/5
@@ -118,19 +67,19 @@ namespace AnywayStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Sales sales = db.Sales.Find(id);
-            db.Sales.Remove(sales);
-            db.SaveChanges();
+            //Sales sales = db.Sales.Find(id);
+            //db.Sales.Remove(sales);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

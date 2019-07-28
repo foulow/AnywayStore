@@ -83,12 +83,12 @@ namespace AnywayStore.Controllers
                     if (model.Email == "admin@admin.com") returnUrl = "~/Home/Admin";
                     else
                     {
-                        using (var dBSet = new DBSet())
-                        {
-                            var userInfo = dBSet.Users.First(m => m.login_id == user.Id);
-                            if (userInfo.Roles.name == "customer") returnUrl = "~/Home/Index";
-                            else returnUrl = "~/Products/Index";
-                        }
+                        //using (var dBSet = new DBSet())
+                        //{
+                        //    var userInfo = dBSet.Users.First(m => m.login_id == user.Id);
+                        //    if (userInfo.Roles.name == "customer") returnUrl = "~/Home/Index";
+                        //    else returnUrl = "~/Products/Index";
+                        //}
                     }
                     return RedirectToLocal(returnUrl);
                 case SignInStatus.LockedOut:
@@ -151,12 +151,12 @@ namespace AnywayStore.Controllers
         public ActionResult Register()
         {
             var _model = new RegisterViewModel();
-            using (var dBSet = new DBSet())
-            {
-                _model.SelectedRole = "seller";
-                _model.Roles = dBSet.Roles.Where(m => m.name != "admin").Select(m => m.name).ToList();
-                ViewBag.Roles = new SelectList(_model.Roles);
-            }
+            //using (var dBSet = new DBSet())
+            //{
+            //    _model.SelectedRole = "seller";
+            //    _model.Roles = dBSet.Roles.Where(m => m.name != "admin").Select(m => m.name).ToList();
+            //    ViewBag.Roles = new SelectList(_model.Roles);
+            //}
             return View(_model);
         }
 
@@ -173,30 +173,30 @@ namespace AnywayStore.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    string returnUrl;
+                    string returnUrl = "";
 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
-                    using (var dBSet = new DBSet())
-                    {
-                        var _user = new Users
-                        {
-                            name = model.Name,
-                            tel = model.PhoneNumber,
-                            role_id = dBSet.Roles.First(m => m.name == model.SelectedRole).id,
-                            login_id = user.Id
-                        };
+                    //using (var dBSet = new DBSet())
+                    //{
+                    //    var _user = new Users
+                    //    {
+                    //        name = model.Name,
+                    //        tel = model.PhoneNumber,
+                    //        role_id = dBSet.Roles.First(m => m.name == model.SelectedRole).id,
+                    //        login_id = user.Id
+                    //    };
 
-                        dBSet.Users.Add(_user);
-                        await dBSet.SaveChangesAsync();
+                    //    dBSet.Users.Add(_user);
+                    //    await dBSet.SaveChangesAsync();
 
-                        if (model.Email == "admin@admin.com") returnUrl = "~/Home/Admin";
-                        else
-                        {
-                            if (_user.Roles.name == "customer") returnUrl = "~/Home/Index";
-                            else returnUrl = "~/Products/Index";
-                        }
-                    }
+                    //    if (model.Email == "admin@admin.com") returnUrl = "~/Home/Admin";
+                    //    else
+                    //    {
+                    //        if (_user.Roles.name == "customer") returnUrl = "~/Home/Index";
+                    //        else returnUrl = "~/Products/Index";
+                    //    }
+                    //}
 
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link

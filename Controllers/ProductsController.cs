@@ -6,41 +6,38 @@ using System.Linq;
 using System.Net;
 using System.Web;
 using System.Web.Mvc;
+using AnywayStore.Helper;
 using AnywayStore.Models;
 
 namespace AnywayStore.Controllers
 {
     public class ProductsController : Controller
     {
-        private DBSet db = new DBSet();
-
         // GET: Products
-        public ActionResult Index()
+        public ActionResult Index(string category = null)
         {
-            var products = db.Products.Include(p => p.Categories).Include(p => p.Users);
-            return View(products.ToList());
+            var iSession = NHibernateHelper.OpenSession();
+
+            var products = iSession.QueryOver<ClassEntityProducts>().List();
+
+            return View(products);
         }
 
         // GET: Products/Details/5
-        public ActionResult Product(int? id)
+        public ActionResult Product(int? idProduct)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Products products = db.Products.Find(id);
-            if (products == null)
-            {
-                return HttpNotFound();
-            }
-            return View(products);
+            var iSession = NHibernateHelper.OpenSession();
+
+            var product = iSession.QueryOver<ClassEntityProducts>().Where(field => field.IdProduct == idProduct).List().FirstOrDefault();
+
+            return View(product);
         }
 
         // GET: Products/Create
         public ActionResult Create()
         {
-            ViewBag.category_id = new SelectList(db.Categories, "id", "name");
-            ViewBag.user_id = new SelectList(db.Users, "id", "name");
+            //ViewBag.category_id = new SelectList(db.Categories, "id", "name");
+            //ViewBag.user_id = new SelectList(db.Users, "id", "name");
             return View();
         }
 
@@ -49,35 +46,35 @@ namespace AnywayStore.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Create([Bind(Include = "id,name,stock,price,measurement,style,color,category_id,user_id")] Products products)
+        public ActionResult Create(int id)
         {
-            if (ModelState.IsValid)
-            {
-                db.Products.Add(products);
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
+            //if (ModelState.IsValid)
+            //{
+            //    db.Products.Add(products);
+            //    db.SaveChanges();
+            //    return RedirectToAction("Index");
+            //}
 
-            ViewBag.category_id = new SelectList(db.Categories, "id", "name", products.category_id);
-            ViewBag.user_id = new SelectList(db.Users, "id", "name", products.user_id);
-            return View(products);
+            //ViewBag.category_id = new SelectList(db.Categories, "id", "name", products.category_id);
+            //ViewBag.user_id = new SelectList(db.Users, "id", "name", products.user_id);
+            return View();
         }
 
         // GET: Products/Edit/5
         public ActionResult Edit(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Products products = db.Products.Find(id);
-            if (products == null)
-            {
-                return HttpNotFound();
-            }
-            ViewBag.category_id = new SelectList(db.Categories, "id", "name", products.category_id);
-            ViewBag.user_id = new SelectList(db.Users, "id", "name", products.user_id);
-            return View(products);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Products products = db.Products.Find(id);
+            //if (products == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            //ViewBag.category_id = new SelectList(db.Categories, "id", "name", products.category_id);
+            //ViewBag.user_id = new SelectList(db.Users, "id", "name", products.user_id);
+            return View();
         }
 
         // POST: Products/Edit/5
@@ -85,32 +82,32 @@ namespace AnywayStore.Controllers
         // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Edit([Bind(Include = "id,name,stock,price,measurement,style,color,category_id,user_id")] Products products)
+        public ActionResult Edit()
         {
-            if (ModelState.IsValid)
-            {
-                db.Entry(products).State = EntityState.Modified;
-                db.SaveChanges();
-                return RedirectToAction("Index");
-            }
-            ViewBag.category_id = new SelectList(db.Categories, "id", "name", products.category_id);
-            ViewBag.user_id = new SelectList(db.Users, "id", "name", products.user_id);
-            return View(products);
+            //if (ModelState.IsValid)
+            //{
+            //    db.Entry(products).State = EntityState.Modified;
+            //    db.SaveChanges();
+            //    return RedirectToAction("Index");
+            //}
+            //ViewBag.category_id = new SelectList(db.Categories, "id", "name", products.category_id);
+            //ViewBag.user_id = new SelectList(db.Users, "id", "name", products.user_id);
+            return View();
         }
 
         // GET: Products/Delete/5
         public ActionResult Delete(int? id)
         {
-            if (id == null)
-            {
-                return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            }
-            Products products = db.Products.Find(id);
-            if (products == null)
-            {
-                return HttpNotFound();
-            }
-            return View(products);
+            //if (id == null)
+            //{
+            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
+            //}
+            //Products products = db.Products.Find(id);
+            //if (products == null)
+            //{
+            //    return HttpNotFound();
+            //}
+            return View();
         }
 
         // POST: Products/Delete/5
@@ -118,19 +115,19 @@ namespace AnywayStore.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult DeleteConfirmed(int id)
         {
-            Products products = db.Products.Find(id);
-            db.Products.Remove(products);
-            db.SaveChanges();
+            //Products products = db.Products.Find(id);
+            //db.Products.Remove(products);
+            //db.SaveChanges();
             return RedirectToAction("Index");
         }
 
-        protected override void Dispose(bool disposing)
-        {
-            if (disposing)
-            {
-                db.Dispose();
-            }
-            base.Dispose(disposing);
-        }
+        //protected override void Dispose(bool disposing)
+        //{
+        //    if (disposing)
+        //    {
+        //        db.Dispose();
+        //    }
+        //    base.Dispose(disposing);
+        //}
     }
 }

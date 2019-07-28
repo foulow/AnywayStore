@@ -1,7 +1,8 @@
-﻿@model AnywayStore.Models.Products
+﻿@model AnywayStore.Models.ClassEntityProducts
 
 @{
     ViewBag.Title = "Product Page";
+    var imageUrl = "~/img/product/" + Model.IdProduct.ToString() + "/";
 }
 
 @Scripts.Render("~/bundles/jquery")
@@ -26,21 +27,31 @@
         <div class="row">
             <div class="col-lg-6">
                 <div class="product-pic-zoom">
-                    <img class="product-big-img" src="~/img/single-product/1.jpg" alt="">
+                    <img class="product-big-img" src="@Url.Content(imageUrl + "1.jpg")" alt="">
                 </div>
                 <div class="product-thumbs" tabindex="1" style="overflow: hidden; outline: none;">
                     <div class="product-thumbs-track">
-                        <div class="pt active" data-imgbigurl="~/img/single-product/1.jpg"><img src="~/img/single-product/thumb-1.jpg" alt=""></div>
-                        <div class="pt" data-imgbigurl="~/img/single-product/2.jpg"><img src="~/img/single-product/thumb-2.jpg" alt=""></div>
-                        <div class="pt" data-imgbigurl="~/img/single-product/3.jpg"><img src="~/img/single-product/thumb-3.jpg" alt=""></div>
-                        <div class="pt" data-imgbigurl="~/img/single-product/4.jpg"><img src="~/img/single-product/thumb-4.jpg" alt=""></div>
+                        <div class="pt active" data-imgbigurl="@Url.Content(imageUrl + "1.jpg")"><img src="@Url.Content(imageUrl + "thumb-1.jpg")" alt=""></div>
+                        <div class="pt" data-imgbigurl="@Url.Content(imageUrl + "2.jpg")"><img src="@Url.Content(imageUrl + "thumb-2.jpg")" alt=""></div>
+                        <div class="pt" data-imgbigurl="@Url.Content(imageUrl + "3.jpg")"><img src="@Url.Content(imageUrl + "thumb-3.jpg")" alt=""></div>
+                        <div class="pt" data-imgbigurl="@Url.Content(imageUrl + "4.jpg")"><img src="@Url.Content(imageUrl + "thumb-4.jpg")" alt=""></div>
                     </div>
                 </div>
             </div>
             <div class="col-lg-6 product-details">
-                <h2 class="p-title">White peplum top</h2>
-                <h3 class="p-price">$39.90</h3>
-                <h4 class="p-stock">Available: <span>In Stock</span></h4>
+                <h2 class="p-title">@Model.Name</h2>
+                <h3 class="p-price">@Model.Price</h3>
+                <h4 class="p-stock">
+                    Available:
+                    @if (@Model.Stock > 0)
+                    {
+                        <span>In Stock</span>
+                    }
+                    else
+                    {
+                        <span>Out Of Stock</span>
+                    }
+                </h4>
                 <div class="p-rating">
                     <i class="fa fa-star-o"></i>
                     <i class="fa fa-star-o"></i>
@@ -55,27 +66,27 @@
                     <p>Size</p>
                     <div class="sc-item">
                         <input type="radio" name="sc" id="xs-size">
-                        <label for="xs-size">32</label>
+                        <label for="xs-size">XS</label>
                     </div>
                     <div class="sc-item">
                         <input type="radio" name="sc" id="s-size">
-                        <label for="s-size">34</label>
+                        <label for="s-size">S</label>
                     </div>
                     <div class="sc-item">
                         <input type="radio" name="sc" id="m-size" checked="">
-                        <label for="m-size">36</label>
+                        <label for="m-size">M</label>
                     </div>
                     <div class="sc-item">
                         <input type="radio" name="sc" id="l-size">
-                        <label for="l-size">38</label>
+                        <label for="l-size">L</label>
                     </div>
                     <div class="sc-item disable">
                         <input type="radio" name="sc" id="xl-size" disabled>
-                        <label for="xl-size">40</label>
+                        <label for="xl-size">XL</label>
                     </div>
                     <div class="sc-item">
                         <input type="radio" name="sc" id="xxl-size">
-                        <label for="xxl-size">42</label>
+                        <label for="xxl-size">XXL</label>
                     </div>
                 </div>
                 <div class="quantity">
@@ -90,10 +101,7 @@
                         </div>
                         <div id="collapse1" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
                             <div class="panel-body">
-                                <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Proin pharetra tempor so dales. Phasellus sagittis auctor gravida. Integer bibendum sodales arcu id te mpus. Ut consectetur lacus leo, non scelerisque nulla euismod nec.</p>
-                                <p>Approx length 66cm/26" (Based on a UK size 8 sample)</p>
-                                <p>Mixed fibres</p>
-                                <p>The Model wears a UK size 8/ EU size 36/ US size 4 and her height is 5'8"</p>
+                                <p>@Model.Information</p>
                             </div>
                         </div>
                     </div>

@@ -43,13 +43,13 @@ namespace AnywayStore.Controllers
 
         public ActionResult Index()
         {
-            var config = WebConfigurationManager.OpenWebConfiguration("~");
-            bool isFistInit = bool.Parse(config.AppSettings.Settings["FistInit"].Value);
+            //var config = WebConfigurationManager.OpenWebConfiguration("~");
+            //bool isFistInit = bool.Parse(config.AppSettings.Settings["FistInit"].Value);
 
-            if (isFistInit) FistRun();
+            //if (isFistInit) FistRun();
 
-            config.AppSettings.Settings["FistInit"].Value = "false";
-            config.Save();
+            //config.AppSettings.Settings["FistInit"].Value = "false";
+            //config.Save();
 
             return View();
         }
@@ -79,19 +79,19 @@ namespace AnywayStore.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    using (var dBSet = new DBSet())
-                    {
-                        var _user = new Users
-                        {
-                            name = model.Name,
-                            tel = model.PhoneNumber,
-                            role_id = dBSet.Roles.First(m => m.name == model.SelectedRole).id,
-                            login_id = user.Id
-                        };
+                    //using (var dBSet = new DBSet())
+                    //{
+                    //    var _user = new Users
+                    //    {
+                    //        name = model.Name,
+                    //        tel = model.PhoneNumber,
+                    //        role_id = dBSet.Roles.First(m => m.name == model.SelectedRole).id,
+                    //        login_id = user.Id
+                    //    };
 
-                        dBSet.Users.Add(_user);
-                        await dBSet.SaveChangesAsync();
-                    }
+                    //    dBSet.Users.Add(_user);
+                    //    await dBSet.SaveChangesAsync();
+                    //}
                 }
             });
         }
