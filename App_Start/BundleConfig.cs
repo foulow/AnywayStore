@@ -13,7 +13,10 @@ namespace AnywayStore
                         "~/Scripts/jquery-ui.min.js",
                         "~/Scripts/jquery.nicescroll.min.js",
                         "~/Scripts/jquery.slicknav.min.js",
-                        "~/Scripts/jquery.zoom.min.js"
+                        "~/Scripts/jquery.zoom.min.js",
+                        "~/Scripts/jquery.validate.min.js",
+                        "~/Scripts/jquery.validate.unobtrusive.min.js",
+                        "~/Scripts/select2.min.js"
                         ));
 
             bundles.Add(new ScriptBundle("~/bundles/jqueryval").Include(

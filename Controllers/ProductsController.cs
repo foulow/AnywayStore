@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Data;
 using System.Data.Entity;
+using System.IO;
 using System.Linq;
 using System.Net;
 using System.Web;
@@ -13,121 +14,71 @@ namespace AnywayStore.Controllers
 {
     public class ProductsController : Controller
     {
+        private readonly Repository<ClassEntityProducts> repositoryProducts = new Repository<ClassEntityProducts>(NHibernateHelper.OpenSession());
+        private readonly Repository<ClassEntityCategories> repositoryCategories = new Repository<ClassEntityCategories>(NHibernateHelper.OpenSession());
+        private readonly Repository<ClassEntityProductsCategories> repositoryProductsCategories = new Repository<ClassEntityProductsCategories>(NHibernateHelper.OpenSession());
+        private readonly Repository<ClassEntityBrands> repositoryBrands = new Repository<ClassEntityBrands>(NHibernateHelper.OpenSession());
         // GET: Products
-        public ActionResult Index(string category = null)
+        private static int take = 12;
+        public ActionResult Index(string find = null)
+        {            
+            take = 12;
+
+            ViewBag.Find = find;
+
+            return View();
+        }
+
+        public ActionResult Products(string find = null)
         {
-            var iSession = NHibernateHelper.OpenSession();
+            IList<ClassEntityProducts> products = new List<ClassEntityProducts>();
 
-            var products = iSession.QueryOver<ClassEntityProducts>().List();
+            if (find == null || find == "")
+            {
+                products = repositoryProducts.All();
+            }
+            else
+            {
+                var category = repositoryCategories.FindBy(field => field.Name.Contains(find)).FirstOrDefault();
 
-            return View(products);
+                if (category != null)
+                {
+                    var productsCategories = repositoryProductsCategories.FindBy(field => field.EntityCategories.IdCategory == category.IdCategory);
+
+                    foreach (var productCategory in productsCategories)
+                    {
+                        products.Add(productCategory.EntityProducts);
+                    }
+                }
+
+                var foundProducts = repositoryProducts.FindBy(field => field.Name.Contains(find));
+                foreach (var product in foundProducts)
+                {
+                    products.Add(product);
+                }
+            }
+
+            products.Take(take).ToList();
+
+            take += 12;
+
+            return PartialView(products);
         }
 
         // GET: Products/Details/5
         public ActionResult Product(int? idProduct)
         {
-            var iSession = NHibernateHelper.OpenSession();
+            var product = repositoryProducts.FindBy(idProduct.Value);
 
-            var product = iSession.QueryOver<ClassEntityProducts>().Where(field => field.IdProduct == idProduct).List().FirstOrDefault();
+            var files = new DirectoryInfo(Server.MapPath("~/img/product/" + idProduct.ToString())).GetFiles();
+            List<string> filesNames = new List<string>();
+
+            foreach (var file in files)
+                filesNames.Add(file.Name);
+
+            ViewBag.Images = filesNames;
 
             return View(product);
         }
-
-        // GET: Products/Create
-        public ActionResult Create()
-        {
-            //ViewBag.category_id = new SelectList(db.Categories, "id", "name");
-            //ViewBag.user_id = new SelectList(db.Users, "id", "name");
-            return View();
-        }
-
-        // POST: Products/Create
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Create(int id)
-        {
-            //if (ModelState.IsValid)
-            //{
-            //    db.Products.Add(products);
-            //    db.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
-
-            //ViewBag.category_id = new SelectList(db.Categories, "id", "name", products.category_id);
-            //ViewBag.user_id = new SelectList(db.Users, "id", "name", products.user_id);
-            return View();
-        }
-
-        // GET: Products/Edit/5
-        public ActionResult Edit(int? id)
-        {
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //Products products = db.Products.Find(id);
-            //if (products == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            //ViewBag.category_id = new SelectList(db.Categories, "id", "name", products.category_id);
-            //ViewBag.user_id = new SelectList(db.Users, "id", "name", products.user_id);
-            return View();
-        }
-
-        // POST: Products/Edit/5
-        // To protect from overposting attacks, please enable the specific properties you want to bind to, for 
-        // more details see https://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Edit()
-        {
-            //if (ModelState.IsValid)
-            //{
-            //    db.Entry(products).State = EntityState.Modified;
-            //    db.SaveChanges();
-            //    return RedirectToAction("Index");
-            //}
-            //ViewBag.category_id = new SelectList(db.Categories, "id", "name", products.category_id);
-            //ViewBag.user_id = new SelectList(db.Users, "id", "name", products.user_id);
-            return View();
-        }
-
-        // GET: Products/Delete/5
-        public ActionResult Delete(int? id)
-        {
-            //if (id == null)
-            //{
-            //    return new HttpStatusCodeResult(HttpStatusCode.BadRequest);
-            //}
-            //Products products = db.Products.Find(id);
-            //if (products == null)
-            //{
-            //    return HttpNotFound();
-            //}
-            return View();
-        }
-
-        // POST: Products/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public ActionResult DeleteConfirmed(int id)
-        {
-            //Products products = db.Products.Find(id);
-            //db.Products.Remove(products);
-            //db.SaveChanges();
-            return RedirectToAction("Index");
-        }
-
-        //protected override void Dispose(bool disposing)
-        //{
-        //    if (disposing)
-        //    {
-        //        db.Dispose();
-        //    }
-        //    base.Dispose(disposing);
-        //}
     }
 }

@@ -16,12 +16,19 @@ namespace AnywayStore.Maps
             Map(field => field.Information).CustomType("StringClob").Not.Nullable();
             Map(field => field.Price).Precision(14).Not.Nullable();
             Map(field => field.Stock).Not.Nullable();
+            Map(field => field.OnSale);
+            Map(field => field.Posted);
 
             References(field => field.EntityBrand).Column("IdBrand").ForeignKey("FK_Products_Brands");
-            References(field => field.EntityColors).Column("IdColor").ForeignKey("FK_Products_Colors");
-            References(field => field.EntitySizes).Column("IdSize").ForeignKey("FK_Products_Sizes");
+            References(field => field.EntityUsers).Column("IdUser").ForeignKey("FK_Products_Users");
 
             HasMany(field => field.EntityProductsCategories)
+                .KeyColumn("IdProduct")
+                .Inverse()
+                .Cascade
+                .All();
+
+            HasMany(field => field.EntityProductsSizes)
                 .KeyColumn("IdProduct")
                 .Inverse()
                 .Cascade

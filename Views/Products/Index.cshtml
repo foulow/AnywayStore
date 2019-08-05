@@ -1,6 +1,4 @@
-﻿@model List<AnywayStore.Models.ClassEntityProducts>
-
-@{
+﻿@{
     ViewBag.Title = "Category Page";
 }
 
@@ -9,7 +7,7 @@
 <!-- Page info -->
 <div class="page-top-info">
     <div class="container">
-        <h4>CAtegory PAge</h4>
+        <h4>Category Page</h4>
         <div class="site-pagination">
             <a href="@Url.Action("Index", "Home")">Home</a> /
             <a href="@Url.Action("Index", "Products")">Shop</a> 
@@ -69,47 +67,6 @@
                     </div>
                 </div>
                 <div class="filter-widget mb-0">
-                    <h2 class="fw-title">color by</h2>
-                    <div class="fw-color-choose">
-                        <div class="cs-item">
-                            <input type="radio" name="cs" id="gray-color">
-                            <label class="cs-gray" for="gray-color">
-                                <span>(3)</span>
-                            </label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" name="cs" id="orange-color">
-                            <label class="cs-orange" for="orange-color">
-                                <span>(25)</span>
-                            </label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" name="cs" id="yellow-color">
-                            <label class="cs-yellow" for="yellow-color">
-                                <span>(112)</span>
-                            </label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" name="cs" id="green-color">
-                            <label class="cs-green" for="green-color">
-                                <span>(75)</span>
-                            </label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" name="cs" id="purple-color">
-                            <label class="cs-purple" for="purple-color">
-                                <span>(9)</span>
-                            </label>
-                        </div>
-                        <div class="cs-item">
-                            <input type="radio" name="cs" id="blue-color" checked="">
-                            <label class="cs-blue" for="blue-color">
-                                <span>(29)</span>
-                            </label>
-                        </div>
-                    </div>
-                </div>
-                <div class="filter-widget mb-0">
                     <h2 class="fw-title">Size</h2>
                     <div class="fw-size-choose">
                         <div class="sc-item">
@@ -151,218 +108,8 @@
             </div>
 
             <div class="col-lg-9  order-1 order-lg-2 mb-5 mb-lg-0">
-                <div class="row">
-                    @foreach (var item in Model)
-                    {
-                        var imageUrl = "~/img/product/" + item.IdProduct.ToString() +"/" + item.IdProduct.ToString() +".jpg";
-                        <div class="col-lg-4 col-sm-6">
-                            <div class="product-item">
-                                <div class="pi-pic">
-                                    <div class="tag-sale">ON Sale</div> <!--Si esta en oferta-->
-                                    <a href="@Url.Action("Product", "Products", new { idProduct = item.IdProduct })" style="display:block; height: 100%">
-                                        <img src="@Url.Content(imageUrl)" alt="" /> <!--imagen-->
-                                    </a>
-                                    <div class="pi-links">
-                                        <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                        <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                    </div>
-                                </div>
-                                <div class="pi-text">
-                                    <h6>@item.Price</h6> <!--precio-->
-                                    <p>@item.Name</p> <!--descripcion-->
-                                </div>
-                            </div>
-                        </div>
-                    }
-
-                    @*Borrar desde aqui*@
-                    @*<div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <div class="tag-sale">ON SALE</div>
-                                <img src="~/img/product/6.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Black and White Stripes Dress</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/7.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Flamboyant Pink Top</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/8.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Flamboyant Pink Top </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/10.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Black and White Stripes Dress</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/11.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Flamboyant Pink Top</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/12.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Flamboyant Pink Top </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/5.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Flamboyant Pink Top</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/9.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Flamboyant Pink Top</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/1.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Flamboyant Pink Top </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <div class="tag-new">new</div>
-                                <img src="~/img/product/2.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Black and White Stripes Dress</p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/3.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Flamboyant Pink Top </p>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-lg-4 col-sm-6">
-                        <div class="product-item">
-                            <div class="pi-pic">
-                                <img src="~/img/product/4.jpg" alt="">
-                                <div class="pi-links">
-                                    <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
-                                    <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                                </div>
-                            </div>
-                            <div class="pi-text">
-                                <h6>$35,00</h6>
-                                <p>Flamboyant Pink Top </p>
-                            </div>
-                        </div>
-                    </div>*@
-
-                    @*Borrar hasta aqui*@
-                    <div class="text-center w-100 pt-3">
-                        <button class="site-btn sb-line sb-dark">LOAD MORE</button>
-                    </div>
+                <div class="row" id="Products">
+                    @Html.Action("Products", "Products", new { find = ViewBag.Find })
                 </div>
             </div>
         </div>

@@ -9,11 +9,14 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using System.Web.Configuration;
+using AnywayStore.Helper;
 
 namespace AnywayStore.Controllers
 {
     public class HomeController : Controller
     {
+        private readonly Repository<ClassEntityUsers> repositoryUsers = new Repository<ClassEntityUsers>(NHibernateHelper.OpenSession());
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -43,13 +46,13 @@ namespace AnywayStore.Controllers
 
         public ActionResult Index()
         {
-            //var config = WebConfigurationManager.OpenWebConfiguration("~");
-            //bool isFistInit = bool.Parse(config.AppSettings.Settings["FistInit"].Value);
+            var config = WebConfigurationManager.OpenWebConfiguration("~");
+            bool isFistInit = bool.Parse(config.AppSettings.Settings["FistInit"].Value);
 
-            //if (isFistInit) FistRun();
+            if (isFistInit) FistRun();
 
-            //config.AppSettings.Settings["FistInit"].Value = "false";
-            //config.Save();
+            config.AppSettings.Settings["FistInit"].Value = "false";
+            config.Save();
 
             return View();
         }
@@ -61,6 +64,11 @@ namespace AnywayStore.Controllers
 
         private Task FistRun()
         {
+            var repositoryBrands = new Repository<ClassEntityBrands>(NHibernateHelper.OpenSession());
+            var repositoryCategories = new Repository<ClassEntityCategories>(NHibernateHelper.OpenSession());
+            var repositoryRoles = new Repository<ClassEntityRoles>(NHibernateHelper.OpenSession());
+            var repositorySizes = new Repository<ClassEntitySizes>(NHibernateHelper.OpenSession());
+
             return Task.Run(async () =>
             {
                 var model = new RegisterViewModel
@@ -79,20 +87,55 @@ namespace AnywayStore.Controllers
                 {
                     await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
 
-                    //using (var dBSet = new DBSet())
-                    //{
-                    //    var _user = new Users
-                    //    {
-                    //        name = model.Name,
-                    //        tel = model.PhoneNumber,
-                    //        role_id = dBSet.Roles.First(m => m.name == model.SelectedRole).id,
-                    //        login_id = user.Id
-                    //    };
+                    var iSession = NHibernateHelper.OpenSession();
 
-                    //    dBSet.Users.Add(_user);
-                    //    await dBSet.SaveChangesAsync();
-                    //}
+                    var _user = new ClassEntityUsers()
+                    {
+                        Name = model.Name,
+                        Tel = model.PhoneNumber,
+                        EntityRoles = iSession.QueryOver<ClassEntityRoles>().Where(field => field.IdRol == 1).List().FirstOrDefault(),
+                        IdLogin = user.Id
+                    };
+
+                    repositoryUsers.Add(_user);
                 }
+
+                repositoryBrands.Add(new List<ClassEntityBrands>() {
+                    new ClassEntityBrands(){ Name = "Abercrombie"},
+                    new ClassEntityBrands(){ Name = "Asos"},
+                    new ClassEntityBrands(){ Name = "Bershka"},
+                    new ClassEntityBrands(){ Name = "Missguided"},
+                    new ClassEntityBrands(){ Name = "Zara"}
+                });
+
+                repositoryCategories.Add(new List<ClassEntityCategories>() {
+                    new ClassEntityCategories(){ Name = "Woman"},
+                    new ClassEntityCategories(){ Name = "Midi Dresses"},
+                    new ClassEntityCategories(){ Name = "Maxi Dresses"},
+                    new ClassEntityCategories(){ Name = "Prom Dresses"},
+                    new ClassEntityCategories(){ Name = "Little Black Dresses"},
+                    new ClassEntityCategories(){ Name = "Mini Dresses"},
+                    new ClassEntityCategories(){ Name = "Man"},
+                    new ClassEntityCategories(){ Name = "Children"},
+                    new ClassEntityCategories(){ Name = "Bags & Purses"},
+                    new ClassEntityCategories(){ Name = "Eyewear"},
+                    new ClassEntityCategories(){ Name = "Footwear"}
+                });
+
+                repositoryRoles.Add(new List<ClassEntityRoles>() {
+                    new ClassEntityRoles(){ Name = "admin"},
+                    new ClassEntityRoles(){ Name = "customer"},
+                    new ClassEntityRoles(){ Name = "seller"}
+                });
+
+                repositorySizes.Add(new List<ClassEntitySizes>() {
+                    new ClassEntitySizes(){ Name = "XS"},
+                    new ClassEntitySizes(){ Name = "S"},
+                    new ClassEntitySizes(){ Name = "M"},
+                    new ClassEntitySizes(){ Name = "L"},
+                    new ClassEntitySizes(){ Name = "XL"},
+                    new ClassEntitySizes(){ Name = "XXL"},
+                });
             });
         }
 

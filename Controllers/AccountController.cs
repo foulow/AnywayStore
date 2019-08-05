@@ -9,12 +9,16 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using AnywayStore.Models;
+using AnywayStore.Helper;
+using System.Collections.Generic;
 
 namespace AnywayStore.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        private readonly Repository<ClassEntityRoles> repositoryRoles = new Repository<ClassEntityRoles>(NHibernateHelper.OpenSession());
+
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
 
@@ -150,13 +154,19 @@ namespace AnywayStore.Controllers
         [AllowAnonymous]
         public ActionResult Register()
         {
-            var _model = new RegisterViewModel();
-            //using (var dBSet = new DBSet())
-            //{
-            //    _model.SelectedRole = "seller";
-            //    _model.Roles = dBSet.Roles.Where(m => m.name != "admin").Select(m => m.name).ToList();
-            //    ViewBag.Roles = new SelectList(_model.Roles);
-            //}
+            var roles = repositoryRoles.FindBy(field => field.Name != "admin");
+
+            var _model = new RegisterViewModel
+            {
+                SelectedRole = "seller",
+                Roles = new List<string>()
+            };
+
+            foreach (var rol in roles)
+                _model.Roles.Add(rol.Name);
+
+            ViewBag.Roles = new SelectList(_model.Roles);
+
             return View(_model);
         }
 
@@ -177,18 +187,13 @@ namespace AnywayStore.Controllers
 
                     await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
 
-                    //using (var dBSet = new DBSet())
-                    //{
-                    //    var _user = new Users
-                    //    {
-                    //        name = model.Name,
-                    //        tel = model.PhoneNumber,
-                    //        role_id = dBSet.Roles.First(m => m.name == model.SelectedRole).id,
-                    //        login_id = user.Id
-                    //    };
-
-                    //    dBSet.Users.Add(_user);
-                    //    await dBSet.SaveChangesAsync();
+                    var _user = new ClassEntityUsers
+                    {
+                        Name = model.Name,
+                        Tel = model.PhoneNumber,
+                        EntityRoles = repositoryRoles.FindBy(field => field.Name == model.SelectedRole).FirstOrDefault(),
+                        IdLogin = user.Id
+                    };
 
                     //    if (model.Email == "admin@admin.com") returnUrl = "~/Home/Admin";
                     //    else
@@ -196,14 +201,11 @@ namespace AnywayStore.Controllers
                     //        if (_user.Roles.name == "customer") returnUrl = "~/Home/Index";
                     //        else returnUrl = "~/Products/Index";
                     //    }
-                    //}
 
-                    // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
-                    // Send an email with this link
-                    // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
-                    
+                     string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                     var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
+                     await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
+
                     return RedirectToLocal(returnUrl);
                 }
                 AddErrors(result);

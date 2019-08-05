@@ -31,10 +31,17 @@
                 </div>
                 <div class="product-thumbs" tabindex="1" style="overflow: hidden; outline: none;">
                     <div class="product-thumbs-track">
-                        <div class="pt active" data-imgbigurl="@Url.Content(imageUrl + "1.jpg")"><img src="@Url.Content(imageUrl + "thumb-1.jpg")" alt=""></div>
-                        <div class="pt" data-imgbigurl="@Url.Content(imageUrl + "2.jpg")"><img src="@Url.Content(imageUrl + "thumb-2.jpg")" alt=""></div>
-                        <div class="pt" data-imgbigurl="@Url.Content(imageUrl + "3.jpg")"><img src="@Url.Content(imageUrl + "thumb-3.jpg")" alt=""></div>
-                        <div class="pt" data-imgbigurl="@Url.Content(imageUrl + "4.jpg")"><img src="@Url.Content(imageUrl + "thumb-4.jpg")" alt=""></div>
+                        @for (var i = 0; i < ViewBag.Images.Count; i++)
+                        {
+                            if (i == 0)
+                            {
+                                <div class="pt active" data-imgbigurl="@Url.Content(imageUrl + ViewBag.Images[i])"><img src="@Url.Content(imageUrl + ViewBag.Images[i])" alt=""></div>
+                            }
+                            else
+                            {
+                                <div class="pt" data-imgbigurl="@Url.Content(imageUrl + ViewBag.Images[i])"><img src="@Url.Content(imageUrl + ViewBag.Images[i])" alt=""></div>
+                            }
+                        }
                     </div>
                 </div>
             </div>
@@ -64,36 +71,26 @@
                 </div>
                 <div class="fw-size-choose">
                     <p>Size</p>
-                    <div class="sc-item">
-                        <input type="radio" name="sc" id="xs-size">
-                        <label for="xs-size">XS</label>
-                    </div>
-                    <div class="sc-item">
-                        <input type="radio" name="sc" id="s-size">
-                        <label for="s-size">S</label>
-                    </div>
-                    <div class="sc-item">
-                        <input type="radio" name="sc" id="m-size" checked="">
-                        <label for="m-size">M</label>
-                    </div>
-                    <div class="sc-item">
-                        <input type="radio" name="sc" id="l-size">
-                        <label for="l-size">L</label>
-                    </div>
-                    <div class="sc-item disable">
-                        <input type="radio" name="sc" id="xl-size" disabled>
-                        <label for="xl-size">XL</label>
-                    </div>
-                    <div class="sc-item">
-                        <input type="radio" name="sc" id="xxl-size">
-                        <label for="xxl-size">XXL</label>
-                    </div>
+                    @for (var i = 0; i < Model.EntityProductsSizes.Count; i++)
+                    {
+                        <div class="sc-item">
+                            @if (i == 0)
+                            {
+                                <input type="radio" name="sc" id="@Model.EntityProductsSizes[i].EntitySizes.Name.ToLower()" checked>
+                            }
+                            else
+                            {
+                                <input type="radio" name="sc" id="@Model.EntityProductsSizes[i].EntitySizes.Name.ToLower()">
+                            }
+                            <label for="@Model.EntityProductsSizes[i].EntitySizes.Name.ToLower()">@Model.EntityProductsSizes[i].EntitySizes.Name.ToUpper()</label>
+                        </div>
+                    }
                 </div>
                 <div class="quantity">
                     <p>Quantity</p>
                     <div class="pro-qty"><input type="text" value="1"></div>
                 </div>
-                <a href="#" class="site-btn">SHOP NOW</a>
+                <button id="cart" class="site-btn">Add to Cart</button>
                 <div id="accordion" class="accordion-area">
                     <div class="panel">
                         <div class="panel-header" id="headingOne">
@@ -152,7 +149,6 @@
                 <div class="pi-pic">
                     <img src="~/img/product/1.jpg" alt="">
                     <div class="pi-links">
-                        <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                         <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
                     </div>
                 </div>
@@ -166,7 +162,6 @@
                     <div class="tag-new">New</div>
                     <img src="~/img/product/2.jpg" alt="">
                     <div class="pi-links">
-                        <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                         <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
                     </div>
                 </div>
@@ -179,7 +174,6 @@
                 <div class="pi-pic">
                     <img src="~/img/product/3.jpg" alt="">
                     <div class="pi-links">
-                        <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                         <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
                     </div>
                 </div>
@@ -192,7 +186,6 @@
                 <div class="pi-pic">
                     <img src="~/img/product/4.jpg" alt="">
                     <div class="pi-links">
-                        <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                         <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
                     </div>
                 </div>
@@ -205,7 +198,6 @@
                 <div class="pi-pic">
                     <img src="~/img/product/6.jpg" alt="">
                     <div class="pi-links">
-                        <a href="#" class="add-card"><i class="flaticon-bag"></i><span>ADD TO CART</span></a>
                         <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
                     </div>
                 </div>
@@ -220,3 +212,34 @@
 <!-- RELATED PRODUCTS section end -->
 
 @Scripts.Render("~/bundles/carousel")
+
+<script>
+    var product = @Html.Raw(Json.Encode(Model));
+
+    $("#cart").click(function () {
+        var size = $(".sc-item input:checked").attr('id');
+        var quantity = $(".quantity input").val()
+
+        $.ajax({
+            url: '@Url.Action("Add","Cart")',
+            type: 'POST',
+            data: {
+                entityProducts: product,
+                size: size,
+                quantity: quantity
+            },
+            success: function (cart) {
+                $("#cart").text("ADDED");
+                $("#cart").css("background", "#f987b2");
+                $("#cart").prop('disabled', true);
+
+                $('.user-panel').find("span").text(
+                    parseInt($('.user-panel').find("span").text()) + 1
+                )
+            },
+            error: function () {
+                alert("An error occurred")
+            }
+        });
+    });
+</script>

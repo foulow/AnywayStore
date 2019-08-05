@@ -1,0 +1,54 @@
+﻿@model List<AnywayStore.Models.ClassEntityProducts>
+
+<section class="category-section spad">
+    <div class="container">
+        <div class="row">
+            @foreach (var item in Model)
+            {
+                var imageUrl = "~/img/product/" + item.IdProduct.ToString() + "/" + "1.jpg";
+                <div class="col-lg-4 col-sm-6">
+                    <div class="product-item">
+                        <div class="pi-pic">
+                            @if (item.OnSale.Value)
+                            {
+                                <div class="tag-sale">ON Sale</div> <!--Si esta en oferta-->
+                            }
+                            else if (item.Posted.Value.Date == DateTime.Now.Date)
+                            {
+                                <div class="tag-new">new</div> <!--Si es nuevo-->
+                            }
+                            <a href="@Url.Action("Index", "Seller", new { idProduct = item.IdProduct })" style="display:block; height: 100%">
+                                <img src="@Url.Content(imageUrl)" alt="" /> <!--imagen-->
+                            </a>
+                            <div class="pi-links">
+                                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+                            </div>
+                        </div>
+                        <div class="pi-text">
+                            <h6>$@item.Price</h6> <!--precio-->
+                            <p>@item.Name</p> <!--descripcion-->
+                        </div>
+                    </div>
+                </div>
+            }
+
+            <div class="text-center w-100 pt-3">
+                <button class="site-btn sb-line sb-dark" id="loadMore">LOAD MORE</button>
+            </div>
+        </div>
+    </div>
+</section>
+
+<script>
+    $("#loadMore").click(function () {
+        debugger
+        $.ajax({
+            url: '@Url.Action("Products","Seller")',
+            type: 'POST',
+            success: function (products) {
+                $('#Products').html("");
+                $('#Products').html(products);
+            }
+        });
+    });
+</script>

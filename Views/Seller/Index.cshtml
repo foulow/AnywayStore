@@ -1,0 +1,167 @@
+﻿@model AnywayStore.ViewModels.ViewModelProducts
+
+@{
+    ViewBag.Title = "New Product Page";
+}
+
+<link href="@Url.Content("~/Content/css/select2.min.css")" rel="stylesheet">
+
+@Scripts.Render("~/bundles/jquery")
+
+<!-- Page info -->
+<div class="page-top-info">
+    <div class="container">
+        <h4>New Product</h4>
+        <div class="site-pagination">
+            <a href="@Url.Action("Index", "Home")">Home</a> /
+            <a href="@Url.Action("Index", "Seller")">Sell</a>
+        </div>
+    </div>
+</div>
+<!-- Page info end -->
+<!-- sell section end -->
+<section class="cart-section p-4">
+    <div class="container">
+        @using (Html.BeginForm("Sell", "Seller", FormMethod.Post, new { @class = "col-md-12", id = "SellForm", enctype = "multipart/form-data" }))
+        {
+            @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+            <div class="row">
+
+                <div class="col-md-6" style="padding-left: 0px;">
+                    <div class="form-group">
+                        <div>
+                            <label>Title</label>
+                        </div>
+                        <div>
+                            @Html.TextBoxFor(field => field.EntityProducts.Name, new { @class = "form-control", placeholder = "Title" })
+                            @Html.ValidationMessageFor(field => field.EntityProducts.Name, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <!--Descripcion-->
+                    <div class="form-group">
+                        <div>
+                            <lable>Description</lable>
+                        </div>
+                        <div>
+                            @Html.TextAreaFor(field => field.EntityProducts.Information, new { @class = "form-control", placeholder = "Description", style = "height: 134px" })
+                            @Html.ValidationMessageFor(field => field.EntityProducts.Information, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col-md-6 row" style="padding-right: 0px;">
+                    <div class="form-group col-md-6">
+                        <div>
+                            @Html.LabelFor(field => field.EntityProducts.Price)
+                        </div>
+                        <div>
+                            @Html.TextBoxFor(field => field.EntityProducts.Price, new { @class = "form-control", placeholder = "Price", type = "number", step = "0.01", min = "0.01", max = "99999.99", onchange = "FixedDecimals(this);" })
+                            @Html.ValidationMessageFor(field => field.EntityProducts.Price, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <div>
+                            <Label>In Stock</Label>
+                        </div>
+                        <div>
+                            @Html.TextBoxFor(field => field.EntityProducts.Stock, new { @class = "form-control", placeholder = "Stock", type = "number", step = "1", min = "1", max = "99999" })
+                            @Html.ValidationMessageFor(field => field.EntityProducts.Stock, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <div>
+                            <label>Sizes Available</label>
+                        </div>
+                        <div>
+                            @Html.ListBoxFor(field => field.SizesId, new MultiSelectList(ViewBag.Sizes, "IdSize", "Name"), new { @class = "form-control color-md-12", multiple = "multiple" })
+                            @Html.ValidationMessageFor(field => field.SizesId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-6">
+                        <div>
+                            <label>Brand</label>
+                        </div>
+                        <div>
+                            @Html.DropDownListFor(field => field.EntityProducts.EntityBrand.IdBrand, new SelectList(ViewBag.Brands, "IdBrand", "Name"), new { @class = "form-control col-md-12" })
+                        </div>
+                    </div>
+
+                    <div class="form-group col-md-12">
+                        <div>
+                            <label>Categories</label>
+                        </div>
+                        <div>
+                            @Html.ListBoxFor(field => field.CategoriesId, new MultiSelectList(ViewBag.Categories, "IdCategory", "Name"), new { @class = "form-control color-md-12", multiple = "multiple" })
+                            @Html.ValidationMessageFor(field => field.CategoriesId, "", new { @class = "text-danger" })
+                        </div>
+                    </div>
+                </div>
+
+                <br/>
+
+                <div class="col-md-12" style="text-align: center;">
+                    @if (Model == null)
+                    {
+                        <div class="form-group col-md-12" style="text-align: center">  
+                            @Html.LabelFor(field => field.EntityProducts.Files, htmlAttributes: new { @class = "control-label" })  
+                            <div style="padding-left: 115px;">  
+                                @Html.TextBoxFor(field => field.EntityProducts.Files, "", new { @type = "file", @multiple = "multiple", id = "Files" })  
+                                @Html.ValidationMessageFor(field => field.EntityProducts.Files, "", new { @class = "text-danger" })  
+                            </div>  
+                        </div>  
+
+                        <br/>
+
+                        <input id="sell" value="Sell" title="sell" type="submit" class="site-btn" style="cursor: pointer;">
+                    }
+                    else
+                    {
+                        <input id="update" value="Update" title="update" type="submit" class="site-btn" style="cursor: pointer;">
+                    }
+                </div>
+            </div>
+
+            @Html.HiddenFor(field => field.EntityProducts.IdProduct);
+        }
+    </div>
+</section>
+<!-- sell section end -->
+
+@Scripts.Render("~/bundles/carousel")
+
+<script>
+    var product = @Html.Raw(Json.Encode(Model));
+    var EntitySizes = [];
+    var EntityCategories = [];
+    var EntityProducts = {};
+
+    $(document).ready(function () {
+        $('#SizesId').select2({
+            placeholder: "Select a Size",
+            allowClear: true
+        });
+        $('#EntityProducts_EntityBrand_IdBrand').select2({
+            placeholder: "Select a Brand",
+            allowClear: true,
+        });
+
+        $('#CategoriesId').select2({
+            placeholder: "Select a Category",
+            allowClear: true,
+        });
+        
+        if (product == null) {
+            $('#SizesId').val('').trigger('change');
+            $('#EntityProducts_EntityBrand_IdBrand').val('').trigger('change');
+            $('#CategoriesId').val('').trigger('change');
+        }
+    });
+
+    function FixedDecimals(input) {
+        $(input).val(parseFloat($(input).val()).toFixed(2))
+    }
+</script>

@@ -14,6 +14,7 @@ namespace AnywayStore.Maps
             Id(field => field.IdUser).GeneratedBy.Native();
             Map(field => field.Name).Length(50).Not.Nullable();
             Map(field => field.Tel).Length(12).Nullable();
+            Map(field => field.IdLogin);
 
             References(field => field.EntityRoles).Column("IdRol").ForeignKey("FK_Users_Roles");
 

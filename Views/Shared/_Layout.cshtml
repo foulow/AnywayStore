@@ -1,11 +1,11 @@
 ﻿<!DOCTYPE html>
 <html>
 <head>
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title</title>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <!-- Favicon -->
-    <link href="img/favicon.ico" rel="shortcut icon" />
+    <link href="~/img/favicon.ico" rel="shortcut icon" />
 
     <!-- Google Font -->
     <link href="https://fonts.googleapis.com/css?family=Josefin+Sans:300,300i,400,400i,700,700i" rel="stylesheet">
@@ -30,14 +30,15 @@
                     <div class="col-lg-2 text-center text-lg-left">
                         <!-- logo -->
                         <a href="@Url.Action("Index", "Home")" class="site-logo">
-                            <img src="img/logo.png" alt="">
+                            <img src="~/img/logo.png" alt="">
                         </a>
                     </div>
                     <div class="col-xl-6 col-lg-5">
-                        <form class="header-search-form">
-                            <input type="text" placeholder="Search on AnywayStore ....">
+                        @using (Html.BeginForm("Index", "Products", FormMethod.Post, new { @class = "header-search-form", role = "form" }))
+                        {
+                            <input type="text" name="find" placeholder="Search on AnywayStore ....">
                             <button><i class="flaticon-search"></i></button>
-                        </form>
+                        }
                     </div>
                     <div class="col-xl-4 col-lg-5">
                         <div class="user-panel">
@@ -45,13 +46,7 @@
                                 <i class="flaticon-profile"></i>
                                 @Html.Partial("_LoginPartial")
                             </div>
-                            <div class="up-item">
-                                <div class="shopping-card">
-                                    <i class="flaticon-bag"></i>
-                                    <span>0</span>
-                                </div>
-                                <a href="@Url.Action("Index", "Cart")">Shopping Cart</a>
-                            </div>
+                            @Html.Action("Cart", "Cart")
                         </div>
                     </div>
                 </div>
@@ -62,9 +57,9 @@
                 <!-- menu -->
                 <ul class="main-menu">
                     <li><a href="@Url.Action("Index", "Home")">Home</a></li>
-                    <li><a href="@Url.Action("Index", "Products", new { category = "Man"})">Man</a></li>
-                    <li><a href="@Url.Action("Index", "Products", new { category = "Woman"})">Woman</a></li>
-                    <li><a href="@Url.Action("Index", "Products", new { category = "Childer"})">Children</a></li>
+                    <li><a href="@Url.Action("Index", "Products", new { find = "Man"})">Man</a></li>
+                    <li><a href="@Url.Action("Index", "Products", new { find = "Woman"})">Woman</a></li>
+                    <li><a href="@Url.Action("Index", "Products", new { find = "Children"})">Children</a></li>
                     <li>
                         <a href="#">Pages</a>
                         <ul class="sub-menu">
@@ -74,6 +69,7 @@
                             <li><a href="@Url.Action("Contact", "Home")">Contact Page</a></li>
                         </ul>
                     </li>
+                    <li><a href="@Url.Action("Index", "Seller")">Sell</a></li>
                 </ul>
             </div>
         </nav>
@@ -87,14 +83,14 @@
     <section class="footer-section">
         <div class="container">
             <div class="footer-logo text-center">
-                <a href="@Url.Action("Index", "Home")"><img src="./img/logo-light.png" alt=""></a>
+                <a href="@Url.Action("Index", "Home")"><img src="~/img/logo-light.png" alt=""></a>
             </div>
             <div class="row">
                 <div class="col-lg-3 col-sm-6">
                     <div class="footer-widget about-widget">
                         <h2>About</h2>
                         <p>Donec vitae purus nunc. Morbi faucibus erat sit amet congue mattis. Nullam frin-gilla faucibus urna, id dapibus erat iaculis ut. Integer ac sem.</p>
-                        <img src="img/cards.png" alt="">
+                        <img src="~/img/cards.png" alt="">
                     </div>
                 </div>
                 <div class="col-lg-3 col-sm-6">
