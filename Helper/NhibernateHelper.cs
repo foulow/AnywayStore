@@ -16,7 +16,7 @@ namespace AnywayStore.Helper
                 Fluently.Configure()
                 .Database(
                     MsSqlConfiguration.MsSql2012
-                    .ConnectionString(c => c.FromConnectionStringWithKey("DBSet"))
+                    .ConnectionString(c => c.FromConnectionStringWithKey("DefaultConnection"))
                     .ShowSql()
                 )
                 .Mappings(m =>
