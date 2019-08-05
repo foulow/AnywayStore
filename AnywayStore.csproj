@@ -493,7 +493,7 @@
     <Content Include="Views\Manage\SetPassword.cshtml" />
     <Content Include="Views\Manage\VerifyPhoneNumber.cshtml" />
     <Content Include="Views\Shared\Lockout.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Account\LoginPartial.cshtml" />
     <Content Include="Views\Products\Product.cshtml" />
     <Content Include="Views\Products\Index.cshtml" />
     <Content Include="Views\Home\Admin.cshtml" />
@@ -508,6 +508,7 @@
     <Content Include="Scripts\popper-utils.js.map" />
     <Content Include="Views\Seller\Products.cshtml" />
     <Content Include="Views\Cart\Cart.cshtml" />
+    <Content Include="Views\Seller\SellMenu.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

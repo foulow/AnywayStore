@@ -18,6 +18,18 @@ namespace AnywayStore.Maps
 
             References(field => field.EntityRoles).Column("IdRol").ForeignKey("FK_Users_Roles");
 
+            HasMany(field => field.EntityUsersProducts)
+                .KeyColumn("IdUser")
+                .Inverse()
+                .Cascade
+                .All();
+
+            HasMany(field => field.EntityProducts)
+                .KeyColumn("IdUser")
+                .Inverse()
+                .Cascade
+                .All();
+
             Table("Users");
         }
     }

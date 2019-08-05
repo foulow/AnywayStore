@@ -31,11 +31,13 @@
                     </div>
                 </div>
             }
-
-            <div class="text-center w-100 pt-3">
-                <button class="site-btn sb-line sb-dark" id="loadMore">LOAD MORE</button>
+            @if (Model.Count > 12)
+            {
+                <div class="text-center w-100 pt-3">
+                    <button class="site-btn sb-line sb-dark" id="loadMore">LOAD MORE</button>
+                </div>
+            }
             </div>
-        </div>
     </div>
 </section>
 

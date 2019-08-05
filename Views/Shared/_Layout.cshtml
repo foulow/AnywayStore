@@ -44,7 +44,7 @@
                         <div class="user-panel">
                             <div class="up-item">
                                 <i class="flaticon-profile"></i>
-                                @Html.Partial("_LoginPartial")
+                                @Html.Action("LoginPartial", "Account")
                             </div>
                             @Html.Action("Cart", "Cart")
                         </div>
@@ -69,7 +69,7 @@
                             <li><a href="@Url.Action("Contact", "Home")">Contact Page</a></li>
                         </ul>
                     </li>
-                    <li><a href="@Url.Action("Index", "Seller")">Sell</a></li>
+                    @Html.Action("SellMenu", "Seller")
                 </ul>
             </div>
         </nav>

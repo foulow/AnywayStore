@@ -101,5 +101,12 @@ namespace AnywayStore.Controllers
 
             return View(products);
         }
+
+        public ActionResult SellMenu()
+        {
+            var isSeller = repositoryUsers.FindBy(field => field.IdLogin == User.Identity.GetUserId()).FirstOrDefault() == null ? false : repositoryUsers.FindBy(field => field.IdLogin == User.Identity.GetUserId()).FirstOrDefault().EntityRoles.IdRol == 3;
+
+            return PartialView(isSeller);
+        }
     }
 }

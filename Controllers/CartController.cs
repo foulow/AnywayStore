@@ -27,10 +27,9 @@ namespace AnywayStore.Controllers
 
         public ActionResult Cart()
         {
-            var user = repositoryUsers.FindBy(field => field.IdLogin == User.Identity.GetUserId()).FirstOrDefault();
-            var inCart = repositoryUsersProducts.FindBy(field => field.EntityUsers.IdUser == user.IdUser).Count;
+            ViewBag.Users = repositoryUsers.FindBy(field => field.IdLogin == User.Identity.GetUserId()).FirstOrDefault();
 
-            return PartialView(inCart);
+            return PartialView();
         }
 
         public ActionResult Checkout()

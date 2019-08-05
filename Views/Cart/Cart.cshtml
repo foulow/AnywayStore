@@ -1,9 +1,36 @@
-﻿@model int
-
-<div class="up-item">
-    <div class="shopping-card">
-        <i class="flaticon-bag"></i>
-        <span>@Model</span>
-    </div>
-    <a href="@Url.Action("Index", "Cart")">Shopping Cart</a>
+﻿<div class="up-item">
+    @if (ViewBag.Users == null)
+    {
+        <div class="shopping-card">
+            <i class="flaticon-bag"></i>
+            <span>0</span>
+        </div>
+        <a href="@Url.Action("Index", "Cart")">Shopping Cart</a>
+    }
+    else
+    {
+        <div class="shopping-card">
+            <i class="flaticon-bag"></i>
+            @if (ViewBag.Users.EntityRoles.IdRol == 2)
+            {
+                <span>@ViewBag.Users.EntityUsersProducts.Count</span>
+            }
+            else if (ViewBag.Users.EntityRoles.IdRol == 3)
+            {
+                <span>@ViewBag.Users.EntityProducts.Count</span>
+            }
+        </div>
+        if (ViewBag.Users.EntityRoles.IdRol == 2)
+        {
+            <a href="@Url.Action("Index", "Cart")">Shopping Cart</a>
+        }
+        else if (ViewBag.Users.EntityRoles.IdRol == 3)
+        {
+            <a href="@Url.Action("Products", "Seller")">My Products</a>
+        }
+        else
+        {
+            <a href="@Url.Action("Admin", "Home")">Administration</a>
+        }
+    }
 </div>

@@ -215,6 +215,13 @@
 
 <script>
     var product = @Html.Raw(Json.Encode(Model));
+    var user = @Html.Raw(Json.Encode(ViewBag.Users));
+
+    $(document).ready(function () {
+        if (user.EntityRoles.IdRol != 2) {
+            $("#cart").prop("disabled", true);
+        }
+    });
 
     $("#cart").click(function () {
         var size = $(".sc-item input:checked").attr('id');
@@ -228,10 +235,12 @@
                 size: size,
                 quantity: quantity
             },
+            beforeSend: function () {
+                $("#cart").prop('disabled', true);
+            },
             success: function (cart) {
                 $("#cart").text("ADDED");
                 $("#cart").css("background", "#f987b2");
-                $("#cart").prop('disabled', true);
 
                 $('.user-panel').find("span").text(
                     parseInt($('.user-panel').find("span").text()) + 1
@@ -239,6 +248,7 @@
             },
             error: function () {
                 alert("An error occurred")
+                $("#cart").prop('disabled', false);
             }
         });
     });

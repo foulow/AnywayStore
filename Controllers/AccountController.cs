@@ -18,6 +18,7 @@ namespace AnywayStore.Controllers
     public class AccountController : Controller
     {
         private readonly Repository<ClassEntityRoles> repositoryRoles = new Repository<ClassEntityRoles>(NHibernateHelper.OpenSession());
+        private readonly Repository<ClassEntityUsers> repositoryUsers = new Repository<ClassEntityUsers>(NHibernateHelper.OpenSession());
 
         private ApplicationSignInManager _signInManager;
         private ApplicationUserManager _userManager;
@@ -524,5 +525,11 @@ namespace AnywayStore.Controllers
             }
         }
         #endregion
+        public ActionResult LoginPartial()
+        {
+            var user = repositoryUsers.FindBy(field => field.IdLogin == User.Identity.GetUserId()).FirstOrDefault();
+
+            return PartialView(user);
+        }
     }
 }

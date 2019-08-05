@@ -9,6 +9,7 @@ using System.Web;
 using System.Web.Mvc;
 using AnywayStore.Helper;
 using AnywayStore.Models;
+using Microsoft.AspNet.Identity;
 
 namespace AnywayStore.Controllers
 {
@@ -18,6 +19,7 @@ namespace AnywayStore.Controllers
         private readonly Repository<ClassEntityCategories> repositoryCategories = new Repository<ClassEntityCategories>(NHibernateHelper.OpenSession());
         private readonly Repository<ClassEntityProductsCategories> repositoryProductsCategories = new Repository<ClassEntityProductsCategories>(NHibernateHelper.OpenSession());
         private readonly Repository<ClassEntityBrands> repositoryBrands = new Repository<ClassEntityBrands>(NHibernateHelper.OpenSession());
+        private readonly Repository<ClassEntityUsers> repositoryUsers = new Repository<ClassEntityUsers>(NHibernateHelper.OpenSession());
         // GET: Products
         private static int take = 12;
         public ActionResult Index(string find = null)
@@ -69,6 +71,7 @@ namespace AnywayStore.Controllers
         public ActionResult Product(int? idProduct)
         {
             var product = repositoryProducts.FindBy(idProduct.Value);
+            var user = repositoryUsers.FindBy(field => field.IdLogin == User.Identity.GetUserId()).FirstOrDefault();
 
             var files = new DirectoryInfo(Server.MapPath("~/img/product/" + idProduct.ToString())).GetFiles();
             List<string> filesNames = new List<string>();
@@ -77,6 +80,7 @@ namespace AnywayStore.Controllers
                 filesNames.Add(file.Name);
 
             ViewBag.Images = filesNames;
+            ViewBag.Users = user;
 
             return View(product);
         }
