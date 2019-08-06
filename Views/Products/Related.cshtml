@@ -1,0 +1,19 @@
+﻿@model List<AnywayStore.Models.ClassEntityProducts>
+
+@foreach (var product in Model)
+{
+    <div class="product-item">
+        <div class="pi-pic">
+            <a href="@Url.Action("Product", "Products", new { idProduct = product.IdProduct })" style="display:block; height: 100%">
+                <img src="@Url.Content("~/img/product/" + product.IdProduct + "/1.jpg")" alt="">
+            </a>
+            <div class="pi-links">
+                <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
+            </div>
+        </div>
+        <div class="pi-text">
+            <h6>$@product.Price</h6>
+            <p>@product.Name </p>
+        </div>
+    </div>
+}

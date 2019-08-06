@@ -41,11 +41,17 @@ namespace AnywayStore.Controllers
             }
             else
             {
-                var category = repositoryCategories.FindBy(field => field.Name.Contains(find)).FirstOrDefault();
+                find = find.ToUpper();
+                var categories = repositoryCategories.FindBy(field => field.Name.ToUpper().Contains(find));
 
-                if (category != null)
+                if (categories.Count > 0)
                 {
-                    var productsCategories = repositoryProductsCategories.FindBy(field => field.EntityCategories.IdCategory == category.IdCategory);
+                    var productsCategories = new List<ClassEntityProductsCategories>();
+
+                    foreach (var category in categories)
+                    {
+                        productsCategories.AddRange(repositoryProductsCategories.FindBy(field => field.EntityCategories.IdCategory == category.IdCategory));
+                    }
 
                     foreach (var productCategory in productsCategories)
                     {
@@ -53,7 +59,7 @@ namespace AnywayStore.Controllers
                     }
                 }
 
-                var foundProducts = repositoryProducts.FindBy(field => field.Name.Contains(find));
+                var foundProducts = repositoryProducts.FindBy(field => field.Name.ToUpper().Contains(find) || field.EntityBrand.Name.ToUpper().Contains(find));
                 foreach (var product in foundProducts)
                 {
                     products.Add(product);
@@ -83,6 +89,27 @@ namespace AnywayStore.Controllers
             ViewBag.Users = user;
 
             return View(product);
+        }
+
+        public ActionResult Related()
+        {
+            var products = repositoryProducts.All();
+
+            return PartialView(products);
+        }
+
+        public ActionResult Categories()
+        {
+            var categories = repositoryCategories.All();
+
+            return PartialView(categories);
+        }
+
+        public ActionResult Brands()
+        {
+            var brands = repositoryBrands.All();
+
+            return PartialView(brands);
         }
     }
 }

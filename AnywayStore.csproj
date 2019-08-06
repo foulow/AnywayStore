@@ -509,6 +509,9 @@
     <Content Include="Views\Seller\Products.cshtml" />
     <Content Include="Views\Cart\Cart.cshtml" />
     <Content Include="Views\Seller\SellMenu.cshtml" />
+    <Content Include="Views\Products\Related.cshtml" />
+    <Content Include="Views\Products\Categories.cshtml" />
+    <Content Include="Views\Products\Brands.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
