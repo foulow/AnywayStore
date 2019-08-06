@@ -163,10 +163,7 @@ namespace AnywayStore.Controllers
                 Roles = new List<string>()
             };
 
-            foreach (var rol in roles)
-                _model.Roles.Add(rol.Name);
-
-            ViewBag.Roles = new SelectList(_model.Roles);
+            ViewBag.Roles = roles;
 
             return View(_model);
         }
@@ -195,6 +192,8 @@ namespace AnywayStore.Controllers
                         EntityRoles = repositoryRoles.FindBy(field => field.Name == model.SelectedRole).FirstOrDefault(),
                         IdLogin = user.Id
                     };
+
+                    repositoryUsers.Add(_user);
 
                     //    if (model.Email == "admin@admin.com") returnUrl = "~/Home/Admin";
                     //    else
@@ -525,6 +524,7 @@ namespace AnywayStore.Controllers
             }
         }
         #endregion
+        [AllowAnonymous]
         public ActionResult LoginPartial()
         {
             var user = repositoryUsers.FindBy(field => field.IdLogin == User.Identity.GetUserId()).FirstOrDefault();

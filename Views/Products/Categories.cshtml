@@ -1,0 +1,6 @@
+﻿@model List<AnywayStore.Models.ClassEntityCategories>
+
+@foreach (var category in Model)
+{
+    <li><a href="@Url.Action("Index", "Products", new { find = category.Name })">@category.Name</a></li>
+}

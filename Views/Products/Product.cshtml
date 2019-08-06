@@ -90,7 +90,7 @@
                     <p>Quantity</p>
                     <div class="pro-qty"><input type="text" value="1"></div>
                 </div>
-                <button id="cart" class="site-btn">Add to Cart</button>
+                <a id="cart" class="site-btn" style="color: white">Add to Cart</a>
                 <div id="accordion" class="accordion-area">
                     <div class="panel">
                         <div class="panel-header" id="headingOne">
@@ -145,67 +145,7 @@
             <h2>RELATED PRODUCTS</h2>
         </div>
         <div class="product-slider owl-carousel">
-            <div class="product-item">
-                <div class="pi-pic">
-                    <img src="~/img/product/1.jpg" alt="">
-                    <div class="pi-links">
-                        <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                    </div>
-                </div>
-                <div class="pi-text">
-                    <h6>$35,00</h6>
-                    <p>Flamboyant Pink Top </p>
-                </div>
-            </div>
-            <div class="product-item">
-                <div class="pi-pic">
-                    <div class="tag-new">New</div>
-                    <img src="~/img/product/2.jpg" alt="">
-                    <div class="pi-links">
-                        <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                    </div>
-                </div>
-                <div class="pi-text">
-                    <h6>$35,00</h6>
-                    <p>Black and White Stripes Dress</p>
-                </div>
-            </div>
-            <div class="product-item">
-                <div class="pi-pic">
-                    <img src="~/img/product/3.jpg" alt="">
-                    <div class="pi-links">
-                        <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                    </div>
-                </div>
-                <div class="pi-text">
-                    <h6>$35,00</h6>
-                    <p>Flamboyant Pink Top </p>
-                </div>
-            </div>
-            <div class="product-item">
-                <div class="pi-pic">
-                    <img src="~/img/product/4.jpg" alt="">
-                    <div class="pi-links">
-                        <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                    </div>
-                </div>
-                <div class="pi-text">
-                    <h6>$35,00</h6>
-                    <p>Flamboyant Pink Top </p>
-                </div>
-            </div>
-            <div class="product-item">
-                <div class="pi-pic">
-                    <img src="~/img/product/6.jpg" alt="">
-                    <div class="pi-links">
-                        <a href="#" class="wishlist-btn"><i class="flaticon-heart"></i></a>
-                    </div>
-                </div>
-                <div class="pi-text">
-                    <h6>$35,00</h6>
-                    <p>Flamboyant Pink Top </p>
-                </div>
-            </div>
+            @Html.Action("Related", "Products")
         </div>
     </div>
 </section>
@@ -218,8 +158,11 @@
     var user = @Html.Raw(Json.Encode(ViewBag.Users));
 
     $(document).ready(function () {
-        if (user.EntityRoles.IdRol != 2) {
+        if (user == null) {
+            $("#cart").attr("href", "@Url.Action("Login", "Account")");
+        } else if (user.EntityRoles.IdRol != 2) {
             $("#cart").prop("disabled", true);
+            $("#cart").css("background", "#f987b2");
         }
     });
 
@@ -227,29 +170,31 @@
         var size = $(".sc-item input:checked").attr('id');
         var quantity = $(".quantity input").val()
 
-        $.ajax({
-            url: '@Url.Action("Add","Cart")',
-            type: 'POST',
-            data: {
-                entityProducts: product,
-                size: size,
-                quantity: quantity
-            },
-            beforeSend: function () {
-                $("#cart").prop('disabled', true);
-            },
-            success: function (cart) {
-                $("#cart").text("ADDED");
-                $("#cart").css("background", "#f987b2");
+        if (user != null && user.EntityRoles.IdRol == 2) {
+            $.ajax({
+                url: '@Url.Action("Add","Cart")',
+                type: 'POST',
+                data: {
+                    entityProducts: product,
+                    size: size,
+                    quantity: quantity
+                },
+                beforeSend: function () {
+                    $("#cart").prop('disabled', true);
+                },
+                success: function (cart) {
+                    $("#cart").text("ADDED");
+                    $("#cart").css("background", "#f987b2");
 
-                $('.user-panel').find("span").text(
-                    parseInt($('.user-panel').find("span").text()) + 1
-                )
-            },
-            error: function () {
-                alert("An error occurred")
-                $("#cart").prop('disabled', false);
-            }
-        });
+                    $('.user-panel').find("span").text(
+                        parseInt($('.user-panel').find("span").text()) + 1
+                    )
+                },
+                error: function () {
+                    alert("An error occurred")
+                    $("#cart").prop('disabled', false);
+                }
+            });
+        }
     });
 </script>
